@@ -3,5 +3,6 @@ import dataclasses
 
 @dataclasses.dataclass
 class FlappyBirdConfig:
-	WIDTH: int = 720
-	HEIGHT: int = 550
+	Dimensions: tuple[int, int] = (800, 650)
+	BG_COLOR: tuple[int, int, int] = (20, 20, 20)
+	fps: int = 10
