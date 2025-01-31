@@ -1,10 +1,7 @@
-from config import FlappyBirdConfig
 from flappy_bird import FlappyBirdGame
 
 def main():
-	conf = FlappyBirdConfig()
-
-	game = FlappyBirdGame(conf)
+	game = FlappyBirdGame()
 
 	while True:
 		game.step()

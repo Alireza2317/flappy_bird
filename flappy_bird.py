@@ -1,11 +1,9 @@
 import sys
 import pygame as pg
-from typing import Optional
-from config import FlappyBirdConfig
+from config import game_config
 
 class FlappyBirdGame:
-	def __init__(self, config: FlappyBirdConfig):
-		self.cfg = config
+	def __init__(self):
 
 		self.init_render()
 		self.reset()
@@ -13,7 +11,7 @@ class FlappyBirdGame:
 	def init_render(self):
 		pg.init()
 		self.clock = pg.time.Clock()
-		self.screen = pg.display.set_mode(self.cfg.Dimensions)
+		self.screen = pg.display.set_mode(game_config.Dimensions)
 
 
 	def reset(self):
@@ -29,6 +27,6 @@ class FlappyBirdGame:
 	def step(self):
 		self.check_events()
 
-		self.screen.fill(self.cfg.BG_COLOR)
-		self.clock.tick(self.cfg.fps)
+		self.screen.fill(game_config.BG_COLOR)
+		self.clock.tick(game_config.fps)
 		pg.display.update()
