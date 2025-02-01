@@ -27,8 +27,8 @@ class Bird:
 		""" Update the pygame shape from the current coordinates. """
 
 		self.shape = pg.Rect(
-			config.player_x, self.y,
-			config.player_width, config.player_height
+			config.bird_x, self.y,
+			config.bird_width, config.bird_height
 		)
 
 
@@ -37,7 +37,7 @@ class Bird:
 
 		pg.draw.rect(
 			screen,
-			config.player_color,
+			config.bird_color,
 			self.shape
 		)
 
@@ -54,7 +54,7 @@ class Bird:
 		return self.y <= 0
 
 
-	
+
 
 
 def main():

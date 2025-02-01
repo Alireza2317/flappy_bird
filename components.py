@@ -41,7 +41,7 @@ class PipesPair:
 		bottom_y (int): The y-coordinate of the bottom pipe.
 		top_rect (pg.Rect): The rectangle representing the top pipe.
 		bottom_rect (pg.Rect): The rectangle representing the bottom pipe.
-		passed (bool): Whether the player has passed the pipes.
+		passed (bool): Whether the bird has passed the pipes.
 		off_screen_left (bool): Whether the pipes are off the screen to the left.
 	"""
 
@@ -93,4 +93,3 @@ class PipesPair:
 
 	def __repr__(self):
 		return f'PipesPair(ty={self.top_y}, by={self.bottom_y}, x={self.x})'
-

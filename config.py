@@ -26,10 +26,10 @@ class FlappyBirdConfig:
 
 	pipes_distance_range: tuple[int, int] = (Dimensions[0] // 5, Dimensions[0] // 1.8)
 
-	# player attributes
-	player_x: int = 50
-	player_width: int = 30
-	player_height: int = 50
-	player_color: Color = (120, 50, 220)
+	# bird attributes
+	bird_x: int = 50
+	bird_width: int = 30
+	bird_height: int = 50
+	bird_color: Color = (120, 50, 220)
 
 config = FlappyBirdConfig()

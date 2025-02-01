@@ -105,8 +105,8 @@ class FlappyBirdGame:
 			# move all the pipes to the left
 			pipe.x -= config.speed
 
-			# check if the player has passed the pipe
-			if pipe.x + config.pipe_width <= config.player_x:
+			# check if the bird has passed the pipe
+			if pipe.x + config.pipe_width <= config.bird_x:
 				pipe.passed = True
 
 		# if the first pipe is off the screen to the left, remove it
