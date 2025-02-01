@@ -28,5 +28,8 @@ class FlappyBirdConfig:
 
 	# player attributes
 	player_x: int = 50
+	player_width: int = 30
+	player_height: int = 50
+	player_color: Color = (120, 50, 220)
 
 config = FlappyBirdConfig()
