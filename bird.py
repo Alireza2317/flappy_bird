@@ -19,8 +19,9 @@ class Bird:
 
 
 	def reset(self) -> None:
-		self.flap: bool = False
+		self.flapping: bool = False
 		self.dead: bool = False
+		self.y_velocity: float = 0
 
 
 	def update(self) -> None:
@@ -30,6 +31,16 @@ class Bird:
 			config.bird_x, self.y,
 			config.bird_width, config.bird_height
 		)
+
+		# the bird goes down
+		self.y += self.y_velocity
+
+		# and the gravity pull gets stronger
+		self.y_velocity = min(
+			self.y_velocity + config.gravity_step,
+			config.gravity_max_velocity
+		)
+
 
 
 	def draw(self, screen: pg.Surface) -> None:
@@ -53,7 +64,13 @@ class Bird:
 
 		return self.y <= 0
 
+	def flap(self) -> None:
+		""" Make the bird flap. """
 
+		if not self.flapping and not self.reached_ceil():
+			self.flapping = True
+			self.y_velocity = -config.gravity_max_velocity
+		
 
 
 

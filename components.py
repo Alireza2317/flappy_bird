@@ -47,7 +47,7 @@ class PipesPair:
 
 	def __init__(self):
 		self.init_coordinates()
-		self.update_rects()
+		self.update()
 
 		self.passed = False
 		#self.off_screen_left = False
@@ -70,7 +70,7 @@ class PipesPair:
 		self.bottom_y = self.top_y + config.pipe_gap
 
 
-	def update_rects(self) -> None:
+	def update(self) -> None:
 		"""	Initialize the rectangles of the pipes.	"""
 
 		# create the rects, based on the x coordinate which is variable

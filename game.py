@@ -100,7 +100,7 @@ class FlappyBirdGame:
 
 		for pipe in self.pipes:
 			# update the pipe rects
-			pipe.update_rects()
+			pipe.update()
 
 			# move all the pipes to the left
 			pipe.x -= config.speed
