@@ -50,7 +50,7 @@ class PipesPair:
 		self.update_rects()
 
 		self.passed = False
-		self.off_screen_left = False
+		#self.off_screen_left = False
 
 
 	def init_coordinates(self) -> None:
@@ -60,7 +60,7 @@ class PipesPair:
 		"""
 
 		# x coordinate of the pipes, off the screen at the end
-		self.x = config.Dimensions[0] - config.pipe_width
+		self.x = config.Dimensions[0]
 
 		# randomly generate the opening y coordinates
 		self.top_y = random.randint(
@@ -94,30 +94,3 @@ class PipesPair:
 	def __repr__(self):
 		return f'PipesPair(ty={self.top_y}, by={self.bottom_y}, x={self.x})'
 
-
-if __name__ == '__main__':
-	pg.init()
-
-	screen = pg.display.set_mode(config.Dimensions)
-	clock = pg.time.Clock()
-
-	ground = Ground()
-	pipes = PipesPair()
-
-
-	while True:
-		for event in pg.event.get():
-			if event.type == pg.QUIT:
-				pg.quit()
-				sys.exit()
-
-		screen.fill(config.BG_COLOR)
-		ground.draw(screen)
-
-
-		pipes.x -= 10
-		pipes.update_rects()
-		pipes.draw(screen)
-
-		clock.tick(40)
-		pg.display.flip()
