@@ -19,9 +19,10 @@ class FlappyBirdConfig:
 	ground_color: Color = (220, 220, 220)
 
 	# pipes attributes
-	pipe_width: int = 20
-	pipe_gap: int = 100
-	pipe_color: Color = (100, 100, 100)
+	pipe_width: int = 30
+	pipe_gap: int = 50
+	pipe_color: Color = (200, 0, 0)
+	pipe_min_size: int = 100
 
 	# player attributes
 	player_x: int = 50
