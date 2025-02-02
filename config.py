@@ -30,11 +30,11 @@ class FlappyBirdConfig:
 	bird_x: int = 50
 	bird_width: int = 30
 	bird_height: int = 50
-	bird_color: Color = (120, 50, 220)
+	bird_color: Color = (108, 206, 238)
 
 
-	gravity_step: float = 0.2
-	gravity_max_velocity: float = 5
+	gravity_step: float = 0.006
+	gravity_max_velocity: float = 1.6
 
 
 

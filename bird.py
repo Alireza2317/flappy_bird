@@ -12,10 +12,11 @@ class Bird:
 		# initally put the bird in the middle
 		self.y: int = config.Dimensions[1] // 2
 
+		self.reset()
+
 		# create the shape
 		self.update()
 
-		self.reset()
 
 
 	def reset(self) -> None:
@@ -27,11 +28,6 @@ class Bird:
 	def update(self) -> None:
 		""" Update the pygame shape from the current coordinates. """
 
-		self.shape = pg.Rect(
-			config.bird_x, self.y,
-			config.bird_width, config.bird_height
-		)
-
 		# the bird goes down
 		self.y += self.y_velocity
 
@@ -41,6 +37,10 @@ class Bird:
 			config.gravity_max_velocity
 		)
 
+		self.shape = pg.Rect(
+			config.bird_x, self.y,
+			config.bird_width, config.bird_height
+		)
 
 
 	def draw(self, screen: pg.Surface) -> None:
@@ -64,13 +64,14 @@ class Bird:
 
 		return self.y <= 0
 
+
 	def flap(self) -> None:
 		""" Make the bird flap. """
 
 		if not self.flapping and not self.reached_ceil():
 			self.flapping = True
-			self.y_velocity = -config.gravity_max_velocity
-		
+			self.y_velocity = -config.gravity_max_velocity * 0.65
+
 
 
 
@@ -86,8 +87,15 @@ def main():
 				pg.quit()
 				sys.exit()
 
+			if event.type == pg.KEYDOWN:
+				if event.key == pg.K_UP:
+					p.flap()
+					p.flapping = False
 
+
+		s.fill(config.BG_COLOR)
 		p.draw(s)
+		p.update()
 
 		pg.display.flip()
 
