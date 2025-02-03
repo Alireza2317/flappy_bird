@@ -1,4 +1,5 @@
 import sys
+import random
 import pygame as pg
 from config import config
 
@@ -70,9 +71,12 @@ class Bird:
 
 		if not self.flapping and not self.reached_ceil():
 			self.flapping = True
-			self.y_velocity = -config.gravity_max_velocity * 0.65
+			self.y_velocity = -config.gravity_max_velocity * 0.8
 
 
+	def decide(self):
+		if random.uniform(0, 1) > 0.57:
+			self.flap()
 
 
 def main():

@@ -1,4 +1,4 @@
-from game import FlappyBirdGame
+from game import FlappyBirdGame;
 
 def main():
 	game = FlappyBirdGame()

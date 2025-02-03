@@ -4,6 +4,7 @@ import pygame as pg
 from collections import deque
 from config import config
 from components import Ground, PipesPair
+from bird import Bird
 
 
 random.seed(23)
@@ -33,6 +34,7 @@ class FlappyBirdGame:
 
 		self.ground = Ground()
 		self.pipes: deque[PipesPair] = deque([PipesPair()])
+		self.bird = Bird()
 
 		self.reset()
 
@@ -63,6 +65,11 @@ class FlappyBirdGame:
 			if event.type == pg.QUIT:
 				pg.quit()
 				sys.exit()
+
+			if event.type == pg.KEYDOWN:
+				if event.key == pg.K_UP:
+					self.bird.flap()
+					self.bird.flapping = False
 
 
 	def _generate_pipes(self) -> None:
@@ -121,6 +128,8 @@ class FlappyBirdGame:
 		for pipe in self.pipes:
 			pipe.draw(self.screen)
 
+		self.bird.draw(self.screen)
+
 		self.clock.tick(config.fps)
 		pg.display.flip()
 
@@ -129,5 +138,8 @@ class FlappyBirdGame:
 		self.check_events()
 
 		self.update_pipes()
+
+		self.bird.update()
+		#self.bird.decide()
 
 		self.update_screen()
