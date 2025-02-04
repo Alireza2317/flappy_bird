@@ -166,6 +166,15 @@ class FlappyBirdGame:
 		return (colide_ground or colide_top_pipe or colide_bottom_pipe)
 
 
+	def update_score(self):
+		if not self.pipes[0].passed:
+			self.passed_pipe = False
+
+		if self.pipes[0].passed and not self.passed_pipe:
+			self.score += 1
+			self.passed_pipe = True
+
+
 	def step(self):
 		"""
 		One step in the game loop.
@@ -180,17 +189,11 @@ class FlappyBirdGame:
 			self.bird.dead = True
 			self.game_over = True
 
-		if not self.pipes[0].passed:
-			self.passed_pipe = False
+		# update the current score based on the bird passing the pipe
+		self.update_score()
 
-		if self.pipes[0].passed and not self.passed_pipe:
-			self.score += 1
-			self.passed_pipe = True
-
-
-
-
-
+		# update all the components and the bird
 		self.update()
 
+		# update the visual elements on the screen
 		self.update_screen()
