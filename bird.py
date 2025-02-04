@@ -79,6 +79,45 @@ class Bird:
 			self.flap()
 
 
+
+class BirdPopulation:
+	""" A population(generation) of birds. """
+
+	def __init__(self, size: int):
+		self.size: int = size
+
+		self.reset()
+
+
+	def reset(self):
+		""" Recreates all the birds. """
+
+		self.birds: list[Bird] = [Bird() for _ in range(self.size)]
+
+
+	def update(self):
+		""" Makes a move for all birds and updates and draws them."""
+
+		for bird in self.birds:
+			if bird.dead:
+				pass
+			else:
+				bird.decide()
+				bird.update()
+				bird.draw()
+
+
+	def extinct(self):
+		""" Returns True if all the birds died, else False. """
+
+		for bird in self.birds:
+			if not bird.dead:
+				return False
+
+		return True
+
+
+
 def main():
 	pg.init()
 	s = pg.display.set_mode(config.Dimensions)
