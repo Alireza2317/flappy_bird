@@ -33,8 +33,6 @@ class FlappyBirdGame:
 		self.init_render()
 
 		self.ground = Ground()
-		self.pipes: deque[PipesPair] = deque([PipesPair()])
-		self.bird = Bird()
 
 		self.reset()
 
@@ -47,13 +45,20 @@ class FlappyBirdGame:
 
 		self.clock = pg.time.Clock()
 		self.screen = pg.display.set_mode(config.Dimensions)
+		self.font = pg.font.Font(pg.font.get_default_font(), 24)
 
 
 	def reset(self):
 		""" Resets the game to its initial state. """
 
+		self.score: int = 0
 		self.game_over = False
+		self.passed_pipe = False
+
 		self.next_pipe_x: int = config.Dimensions[0] + config.pipes_distance_range[0]
+
+		self.pipes: deque[PipesPair] = deque([PipesPair()])
+		self.bird = Bird()
 
 		self.screen.fill(config.BG_COLOR)
 
@@ -121,6 +126,14 @@ class FlappyBirdGame:
 			self.pipes.popleft()
 
 
+	def update_text(self):
+		text_sf = self.font.render(
+			f'Score: {self.score:>3}', True, config.ground_color
+		)
+
+		self.screen.blit(text_sf, (10, (config.Dimensions[1]-config.ground_level) // 2 + config.ground_level))
+
+
 	def update_screen(self):
 		self.screen.fill(config.BG_COLOR)
 		self.ground.draw(self.screen)
@@ -130,16 +143,54 @@ class FlappyBirdGame:
 
 		self.bird.draw(self.screen)
 
+		self.update_text()
+
 		self.clock.tick(config.fps)
 		pg.display.flip()
 
 
-	def step(self):
-		self.check_events()
-
-		self.update_pipes()
+	def update(self):
+		""" Updates all the components and the bird. """
 
 		self.bird.update()
-		#self.bird.decide()
+		self.update_pipes()
+
+
+	def bird_collided(self):
+		""" Checks wether the bird collided with the pipes or the ground. """
+
+		colide_ground = self.bird.collided(self.ground.rect)
+		colide_top_pipe = self.bird.collided(self.pipes[0].top_rect)
+		colide_bottom_pipe = self.bird.collided(self.pipes[0].bottom_rect)
+
+		return (colide_ground or colide_top_pipe or colide_bottom_pipe)
+
+
+	def step(self):
+		"""
+		One step in the game loop.
+		Running the game, handling logic and user input and updating the game on the screen.
+		"""
+
+		# check for user input
+		self.check_events()
+
+		# check if the bird hit any of the pipes or the ground:
+		if self.bird_collided():
+			self.bird.dead = True
+			self.game_over = True
+
+		if not self.pipes[0].passed:
+			self.passed_pipe = False
+
+		if self.pipes[0].passed and not self.passed_pipe:
+			self.score += 1
+			self.passed_pipe = True
+
+
+
+
+
+		self.update()
 
 		self.update_screen()

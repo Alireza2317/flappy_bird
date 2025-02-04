@@ -8,7 +8,7 @@ Color: TypeAlias = Tuple[int, int, int]
 
 @dataclasses.dataclass
 class FlappyBirdConfig:
-	Dimensions: tuple[int, int] = (1000, 650)
+	Dimensions: tuple[int, int] = (1250, 700)
 	BG_COLOR: Color = (20, 20, 20)
 	fps: int = 60
 	speed: float = 4
@@ -24,7 +24,7 @@ class FlappyBirdConfig:
 	pipe_color: Color = ground_color
 	pipe_min_size: int = 100
 
-	pipes_distance_range: tuple[int, int] = (Dimensions[0] // 5, Dimensions[0] // 1.8)
+	pipes_distance_range: tuple[int, int] = (Dimensions[0] // 4, Dimensions[0] // 1.8)
 
 	# bird attributes
 	bird_x: int = 50
