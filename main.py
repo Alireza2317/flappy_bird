@@ -1,6 +1,6 @@
-from game import FlappyBirdGame
+from game import FlappyBirdGameAI
 
-game = FlappyBirdGame()
+game = FlappyBirdGameAI()
 
 while True:
 	game.step()

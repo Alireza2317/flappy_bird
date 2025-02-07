@@ -4,7 +4,7 @@ import pygame as pg
 from collections import deque
 from config import config
 from components import Ground, PipesPair
-from bird import Bird
+from bird import Bird, BirdPopulation
 
 
 random.seed(23)
@@ -200,3 +200,71 @@ class FlappyBirdGame:
 
 		# update the visual elements on the screen
 		self.update_screen()
+
+
+
+class FlappyBirdGameAI(FlappyBirdGame):
+	def reset(self):
+		super().reset()
+
+		del self.bird
+
+		self.population = BirdPopulation()
+
+
+	def check_events(self):
+		for event in pg.event.get():
+			if event.type == pg.QUIT:
+				pg.quit()
+				sys.exit()
+
+
+	def check_bird_collisions(self) -> None:
+		for bird in self.population.birds:
+			colide_ground = bird.collided(self.ground.rect)
+			colide_top_pipe = bird.collided(self.pipes[0].top_rect)
+			colide_bottom_pipe = bird.collided(self.pipes[0].bottom_rect)
+
+			if (colide_ground or colide_top_pipe or colide_bottom_pipe):
+				bird.dead = True
+
+
+	def update(self):
+		self.population.update(self.screen)
+		self.update_pipes()
+
+
+	def update_screen(self):
+		self.screen.fill(config.BG_COLOR)
+		self.ground.draw(self.screen)
+
+		for pipe in self.pipes:
+			pipe.draw(self.screen)
+
+
+		for bird in self.population.birds:
+			bird.draw(self.screen)
+
+
+		self.clock.tick(config.fps)
+		pg.display.flip()
+
+
+	def step(self):
+		self.check_events()
+
+		self.check_bird_collisions()
+
+		self.update()
+		self.update_screen()
+
+
+
+if __name__ == '__main__':
+	game = FlappyBirdGame()
+
+	while True:
+		game.step()
+
+		if game.game_over:
+			game.reset()
