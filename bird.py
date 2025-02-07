@@ -8,11 +8,12 @@ from config import config, Color
 class Bird:
 	""" Bird's coordinates and navigation. """
 
-	def __init__(self):
+	def __init__(self, color: Color = config.bird_color):
 		# the bird's x coordinate is fixed
 		# only the y coordinate changes
 		# initally put the bird in the middle
-		self.y: int = config.Dimensions[1] // 2
+
+		self.color = color
 
 		self.reset()
 
@@ -107,7 +108,13 @@ class BirdPopulation:
 	def reset(self):
 		""" Recreates all the birds. """
 
-		self.birds: list[Bird] = [Bird() for _ in range(self.size)]
+		self.birds: list[Bird] = []
+
+		for _ in range(self.size):
+			random_color: Color = (
+				random.randint(80, 255), random.randint(80, 255), random.randint(80, 255)
+			)
+			self.birds.append(Bird(random_color))
 
 
 	def update(self):
