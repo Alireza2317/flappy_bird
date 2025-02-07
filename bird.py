@@ -117,7 +117,7 @@ class BirdPopulation:
 			self.birds.append(Bird(random_color))
 
 
-	def update(self):
+	def update(self, screen: pg.Surface):
 		""" Makes a move for all birds and updates and draws them."""
 
 		for bird in self.birds:
@@ -126,7 +126,7 @@ class BirdPopulation:
 			else:
 				bird.decide()
 				bird.update()
-				bird.draw()
+				bird.draw(screen)
 
 
 	def extinct(self):
