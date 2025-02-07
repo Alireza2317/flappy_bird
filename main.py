@@ -1,14 +1,9 @@
-from game import FlappyBirdGame;
+from game import FlappyBirdGame
 
-def main():
-	game = FlappyBirdGame()
+game = FlappyBirdGame()
 
-	while True:
-		game.step()
+while True:
+	game.step()
 
-		if game.game_over:
-			game.reset()
-
-
-if __name__ == '__main__':
-	main()
+	if game.game_over:
+		game.reset()
