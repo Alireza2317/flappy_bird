@@ -155,14 +155,16 @@ class FlappyBirdGame:
 		self.update_pipes()
 
 
-	def bird_collided(self):
+	def check_bird_collisions(self):
 		""" Checks wether the bird collided with the pipes or the ground. """
 
 		colide_ground = self.bird.collided(self.ground.rect)
 		colide_top_pipe = self.bird.collided(self.pipes[0].top_rect)
 		colide_bottom_pipe = self.bird.collided(self.pipes[0].bottom_rect)
 
-		return (colide_ground or colide_top_pipe or colide_bottom_pipe)
+		if (colide_ground or colide_top_pipe or colide_bottom_pipe):
+			self.bird.dead = True
+			self.game_over = True
 
 
 	def update_score(self):
@@ -188,9 +190,7 @@ class FlappyBirdGame:
 		self.check_events()
 
 		# check if the bird hit any of the pipes or the ground:
-		if self.bird_collided():
-			self.bird.dead = True
-			self.game_over = True
+		self.check_bird_collisions()
 
 		# update the current score based on the bird passing the pipe
 		self.update_score()
