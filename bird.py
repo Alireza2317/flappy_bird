@@ -1,7 +1,8 @@
 import sys
 import random
 import pygame as pg
-from config import config
+from config import config, Color
+
 
 
 class Bird:
@@ -21,7 +22,7 @@ class Bird:
 
 
 	def reset(self) -> None:
-		self.flapping: bool = False
+		self._flap: bool = False
 		self.dead: bool = False
 		self.y_velocity: float = 0
 
@@ -37,6 +38,16 @@ class Bird:
 			self.y_velocity + config.gravity_step,
 			config.gravity_max_velocity
 		)
+		# unlock flapping feature if bird starts going down
+		#if self.y_velocity > 0:
+		if self.y_velocity > 0.25 * config.flap_velocity:
+			self._flap = False
+
+
+		# unlock flapping feature if bird starts going down
+		#if self.y_velocity > 0:
+		if self.y_velocity > 0.25 * config.flap_velocity:
+			self._flap = False
 
 		self.shape = pg.Rect(
 			config.bird_x, self.y,
@@ -58,9 +69,11 @@ class Bird:
 		""" Returns wether the bird hit the given shape or not. """
 
 		return pg.Rect.colliderect(self.shape, shape)
+		if not self._flap and not self.reached_ceil():
+			self.y_velocity = config.flap_velocity
 
-
-	def reached_ceil(self) -> bool:
+			# lock flapping
+			self._flap = True
 		""" Returns wether the bird has reached the top of the screen. """
 
 		return self.y <= 0
@@ -69,9 +82,11 @@ class Bird:
 	def flap(self) -> None:
 		""" Make the bird flap. """
 
-		if not self.flapping and not self.reached_ceil():
-			self.flapping = True
-			self.y_velocity = -config.gravity_max_velocity * 0.8
+		if not self._flap and not self.reached_ceil():
+			self.y_velocity = config.flap_velocity
+
+			# lock flapping
+			self._flap = True
 
 
 	def decide(self):

@@ -11,7 +11,8 @@ class FlappyBirdConfig:
 	Dimensions: tuple[int, int] = (1250, 700)
 	BG_COLOR: Color = (20, 20, 20)
 	fps: int = 60
-	speed: float = 4
+	#speed: float = 4
+	speed: float = 2.5
 
 	# ground attributes
 	ground_level: int = 550
@@ -35,6 +36,7 @@ class FlappyBirdConfig:
 
 	gravity_step: float = speed / 40
 	gravity_max_velocity: float = speed
+	flap_velocity: float = -gravity_max_velocity * 0.8
 
 
 

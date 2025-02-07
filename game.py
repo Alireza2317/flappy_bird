@@ -74,7 +74,6 @@ class FlappyBirdGame:
 			if event.type == pg.KEYDOWN:
 				if event.key == pg.K_UP:
 					self.bird.flap()
-					self.bird.flapping = False
 
 
 	def _generate_pipes(self) -> None:
