@@ -167,6 +167,10 @@ class FlappyBirdGame:
 
 
 	def update_score(self):
+		"""
+		Updates the score based on the bird's position and the number of pipes it passed.
+		"""
+
 		if not self.pipes[0].passed:
 			self.passed_pipe = False
 
