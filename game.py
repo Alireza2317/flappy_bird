@@ -228,6 +228,9 @@ class FlappyBirdGameAI(FlappyBirdGame):
 			if (colide_ground or colide_top_pipe or colide_bottom_pipe):
 				bird.dead = True
 
+		if self.population.extinct():
+			self.game_over = True
+
 
 	def update(self):
 		self.population.update(self.screen)
