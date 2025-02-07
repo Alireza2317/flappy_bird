@@ -12,6 +12,10 @@ class Bird:
 		# the bird's x coordinate is fixed
 		# only the y coordinate changes
 		# initally put the bird in the middle
+		self.y: int = random.randint(
+			int(config.ground_level * 0.25),
+			int(config.ground_level * 0.75)
+		)
 
 		self.color = color
 
@@ -39,11 +43,6 @@ class Bird:
 			self.y_velocity + config.gravity_step,
 			config.gravity_max_velocity
 		)
-		# unlock flapping feature if bird starts going down
-		#if self.y_velocity > 0:
-		if self.y_velocity > 0.25 * config.flap_velocity:
-			self._flap = False
-
 
 		# unlock flapping feature if bird starts going down
 		#if self.y_velocity > 0:
@@ -61,7 +60,7 @@ class Bird:
 
 		pg.draw.rect(
 			screen,
-			config.bird_color,
+			self.color,
 			self.shape
 		)
 
@@ -70,11 +69,9 @@ class Bird:
 		""" Returns wether the bird hit the given shape or not. """
 
 		return pg.Rect.colliderect(self.shape, shape)
-		if not self._flap and not self.reached_ceil():
-			self.y_velocity = config.flap_velocity
 
-			# lock flapping
-			self._flap = True
+
+	def reached_ceil(self) -> bool:
 		""" Returns wether the bird has reached the top of the screen. """
 
 		return self.y <= 0
@@ -91,9 +88,8 @@ class Bird:
 
 
 	def decide(self):
-		if random.uniform(0, 1) > 0.57:
+		if random.uniform(0, 1) > 0.75:
 			self.flap()
-
 
 
 class BirdPopulation:
@@ -141,10 +137,16 @@ class BirdPopulation:
 
 
 def main():
+	from components import Ground
+	#random.seed()
+
 	pg.init()
 	s = pg.display.set_mode(config.Dimensions)
 
-	p = Bird()
+	g = Ground()
+	g.draw(s)
+
+	p = BirdPopulation(5)
 
 	while True:
 		for event in pg.event.get():
@@ -152,15 +154,11 @@ def main():
 				pg.quit()
 				sys.exit()
 
-			if event.type == pg.KEYDOWN:
-				if event.key == pg.K_UP:
-					p.flap()
-					p.flapping = False
-
 
 		s.fill(config.BG_COLOR)
-		p.draw(s)
-		p.update()
+		g.draw(s)
+
+		p.update(s)
 
 		pg.display.flip()
 
