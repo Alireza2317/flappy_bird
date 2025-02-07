@@ -25,7 +25,6 @@ class Bird:
 		self.update()
 
 
-
 	def reset(self) -> None:
 		self._flap: bool = False
 		self.dead: bool = False
@@ -46,7 +45,7 @@ class Bird:
 
 		# unlock flapping feature if bird starts going down
 		#if self.y_velocity > 0:
-		if self.y_velocity > 0.25 * config.flap_velocity:
+		if self.y_velocity > 0.1 * config.flap_velocity:
 			self._flap = False
 
 		self.shape = pg.Rect(
@@ -57,12 +56,12 @@ class Bird:
 
 	def draw(self, screen: pg.Surface) -> None:
 		""" Draw the bird shape on the given screen. """
-
-		pg.draw.rect(
-			screen,
-			self.color,
-			self.shape
-		)
+		if not self.dead:
+			pg.draw.rect(
+				screen,
+				self.color,
+				self.shape
+			)
 
 
 	def collided(self, shape: pg.Rect) -> bool:
@@ -88,14 +87,14 @@ class Bird:
 
 
 	def decide(self):
-		if random.uniform(0, 1) > 0.75:
+		if random.uniform(0, 1) > 0.972:
 			self.flap()
 
 
 class BirdPopulation:
 	""" A population(generation) of birds. """
 
-	def __init__(self, size: int):
+	def __init__(self, size: int = 50):
 		self.size: int = size
 
 		self.reset()
