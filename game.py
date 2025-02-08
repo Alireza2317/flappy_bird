@@ -232,6 +232,23 @@ class FlappyBirdGameAI(FlappyBirdGame):
 			self.game_over = True
 
 
+	def update_text(self):
+		score_text_sf = self.font.render(
+			f'Score: {self.score:>3}', True, config.ground_color
+		)
+
+		alives_text_sf = self.font.render(
+			f'Alive Birds: {len(self.population):>3}', True, config.ground_color
+		)
+
+		self.screen.blit(
+			score_text_sf, (10, (config.Dimensions[1]-config.ground_level) // 3 + config.ground_level)
+		)
+		self.screen.blit(
+			alives_text_sf, (10, 2 * (config.Dimensions[1]-config.ground_level) // 3 + config.ground_level)
+		)
+
+
 	def update(self):
 		self.population.update(self.screen)
 		self.update_pipes()
@@ -248,6 +265,7 @@ class FlappyBirdGameAI(FlappyBirdGame):
 		for bird in self.population.birds:
 			bird.draw(self.screen)
 
+		self.update_text()
 
 		self.clock.tick(config.fps)
 		pg.display.flip()
@@ -257,6 +275,8 @@ class FlappyBirdGameAI(FlappyBirdGame):
 		self.check_events()
 
 		self.check_bird_collisions()
+
+		self.update_score()
 
 		self.update()
 		self.update_screen()

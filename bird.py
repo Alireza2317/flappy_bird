@@ -100,7 +100,7 @@ class BirdPopulation:
 		self.reset()
 
 
-	def reset(self):
+	def reset(self) -> None:
 		""" Recreates all the birds. """
 
 		self.birds: list[Bird] = []
@@ -112,19 +112,24 @@ class BirdPopulation:
 			self.birds.append(Bird(random_color))
 
 
-	def update(self, screen: pg.Surface):
+	def update(self, screen: pg.Surface) -> None:
 		""" Makes a move for all birds and updates and draws them."""
+
+		dead_birds: list[int] = []
 
 		for bird in self.birds:
 			if bird.dead:
-				pass
+				dead_birds.append(bird)
 			else:
 				bird.decide()
 				bird.update()
 				bird.draw(screen)
 
+		for dbird in dead_birds:
+			self.birds.remove(dbird)
 
-	def extinct(self):
+
+	def extinct(self) -> bool:
 		""" Returns True if all the birds died, else False. """
 
 		for bird in self.birds:
@@ -133,6 +138,9 @@ class BirdPopulation:
 
 		return True
 
+
+	def __len__(self) -> int:
+		return len(self.birds)
 
 
 def main():
