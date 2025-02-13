@@ -20,3 +20,20 @@ class Network:
 		1: flap
 	"""
 
+	def __init__(self):
+		self.input: np.ndarray = np.zeros((4,))
+		self.weights: np.ndarray = np.random.random((4,))
+		self.activation: Callable = self.sigmoid
+
+		self.forward()
+
+
+	def forward(self) -> None:
+		self.output_neuron: float = self.activation(
+			self.weights.T @ self.input
+		)
+
+
+	@staticmethod
+	def sigmoid(z: float) -> float:
+		return 1 / (1 + np.exp(-z))
