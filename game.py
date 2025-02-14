@@ -125,6 +125,15 @@ class FlappyBirdGame:
 			self.pipes.popleft()
 
 
+	@property
+	def next_pipe(self) -> PipesPair | None:
+		if self.pipes:
+			for pipe in self.pipes:
+				if not pipe.passed:
+					return pipe
+		return None
+
+
 	def update_text(self):
 		text_sf = self.font.render(
 			f'Score: {self.score:>3}', True, config.ground_color
