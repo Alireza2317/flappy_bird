@@ -40,3 +40,15 @@ class Network:
 	@staticmethod
 	def sigmoid(z: float) -> float:
 		return 1 / (1 + np.exp(-z))
+
+
+def main():
+	model = Network()
+	in_vector = np.array([0.2, 0.1, 0.7, 0.4])
+	model.forward(in_vector)
+
+	print(model.weights)
+	print(model.output_neuron)
+
+if __name__ == '__main__':
+	main()
