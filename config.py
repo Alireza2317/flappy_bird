@@ -8,14 +8,13 @@ Color: TypeAlias = Tuple[int, int, int]
 
 @dataclasses.dataclass
 class FlappyBirdConfig:
-	Dimensions: tuple[int, int] = (1250, 700)
+	Dimensions: tuple[int, int] = (1250, 900)
 	BG_COLOR: Color = (20, 20, 20)
 	fps: int = 60
-	speed: float = 4
-	#speed: float = 2.5
+	speed: float = 2.5
 
 	# ground attributes
-	ground_level: int = 550
+	ground_level: int = int(Dimensions[1] * 0.85)
 	ground_thickness: int = 5
 	ground_color: Color = (220, 220, 220)
 
