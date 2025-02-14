@@ -105,7 +105,7 @@ class FlappyBirdGame:
 			self._generate_pipes()
 
 		# skip the update if there are no pipes yet
-		if not self.pipes:
+		if self.next_pipe is None:
 			return
 
 
@@ -121,7 +121,7 @@ class FlappyBirdGame:
 				pipe.passed = True
 
 		# if the first pipe is off the screen to the left, remove it
-		if self.pipes[0].x + config.pipe_width <= 0:
+		if self.next_pipe.x + config.pipe_width <= 0:
 			self.pipes.popleft()
 
 
@@ -164,12 +164,17 @@ class FlappyBirdGame:
 		self.update_pipes()
 
 
-	def check_bird_collisions(self):
+	def check_bird_collisions(self) -> None:
 		""" Checks wether the bird collided with the pipes or the ground. """
 
 		colide_ground = self.bird.collided(self.ground.rect)
-		colide_top_pipe = self.bird.collided(self.pipes[0].top_rect)
-		colide_bottom_pipe = self.bird.collided(self.pipes[0].bottom_rect)
+
+		colide_top_pipe = False
+		colide_bottom_pipe = False
+
+		if self.next_pipe is not None:
+			colide_top_pipe = self.bird.collided(self.next_pipe.top_rect)
+			colide_bottom_pipe = self.bird.collided(self.next_pipe.bottom_rect)
 
 		if (colide_ground or colide_top_pipe or colide_bottom_pipe):
 			self.bird.dead = True
@@ -231,8 +236,13 @@ class FlappyBirdGameAI(FlappyBirdGame):
 	def check_bird_collisions(self) -> None:
 		for bird in self.population.birds:
 			colide_ground = bird.collided(self.ground.rect)
-			colide_top_pipe = bird.collided(self.pipes[0].top_rect)
-			colide_bottom_pipe = bird.collided(self.pipes[0].bottom_rect)
+
+			colide_top_pipe = False
+			colide_bottom_pipe = False
+
+			if self.next_pipe is not None:
+				colide_top_pipe = bird.collided(self.next_pipe.top_rect)
+				colide_bottom_pipe = bird.collided(self.next_pipe.bottom_rect)
 
 			if (colide_ground or colide_top_pipe or colide_bottom_pipe):
 				bird.dead = True
