@@ -28,9 +28,12 @@ class Network:
 		self.forward()
 
 
-	def forward(self) -> None:
+	def forward(self, in_vector: np.ndarray | None = None) -> None:
+		if in_vector is None:
+			in_vector = self.input
+
 		self.output_neuron: float = self.activation(
-			self.weights.T @ self.input
+			self.weights.T @ in_vector
 		)
 
 
