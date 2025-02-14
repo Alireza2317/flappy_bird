@@ -127,6 +127,8 @@ class FlappyBirdGame:
 
 	@property
 	def next_pipe(self) -> PipesPair | None:
+		""" Returns the first pipe which is not passed. """
+		
 		if self.pipes:
 			for pipe in self.pipes:
 				if not pipe.passed:
