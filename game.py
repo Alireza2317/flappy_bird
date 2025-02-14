@@ -2,12 +2,16 @@ import sys
 import random
 import pygame as pg
 from collections import deque
+from typing import TypeAlias
 from config import config
 from components import Ground, PipesPair
 from bird import Bird, BirdPopulation
 
 
 random.seed(23)
+
+VisionType: TypeAlias = tuple[float, float, float]
+
 
 class FlappyBirdGame:
 	"""
@@ -53,12 +57,13 @@ class FlappyBirdGame:
 
 		self.score: int = 0
 		self.game_over = False
-		self.passed_pipe = False
 
 		self.next_pipe_x: int = config.Dimensions[0] + config.pipes_distance_range[0]
 
 		self.pipes: deque[PipesPair] = deque([PipesPair()])
 		self.bird = Bird()
+
+		self._previous_next_pipe = self.pipes[0]
 
 		self.screen.fill(config.BG_COLOR)
 
@@ -128,7 +133,7 @@ class FlappyBirdGame:
 	@property
 	def next_pipe(self) -> PipesPair | None:
 		""" Returns the first pipe which is not passed. """
-		
+
 		if self.pipes:
 			for pipe in self.pipes:
 				if not pipe.passed:
@@ -290,6 +295,31 @@ class FlappyBirdGameAI(FlappyBirdGame):
 
 		self.clock.tick(config.fps)
 		pg.display.flip()
+
+
+	def update_vision(self):
+		""" Updating the vision of each bird in the population. """
+
+		# if there are still no pipes
+		if not self.pipes:
+			return
+
+		self.visions: list[VisionType] = []
+
+		for bird in self.population.birds:
+			# elements in vision(normalized):
+
+			# first element is vertical distance to top pipe
+			v1: float = (bird.y - self.next_pipe.top_y) / config.ground_level
+
+			# second element is vertical distance to bottom pipe
+			v2: float = (bird.y - self.next_pipe.bottom_y) / config.ground_level
+
+			# third element is horizental distance to pipes
+			v3: float = (config.bird_x - self.next_pipe.x) / config.ground_level
+
+			vision: VisionType = (v1, v2, v3)
+			self.visions.append(vision)
 
 
 	def step(self):

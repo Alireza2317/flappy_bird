@@ -3,9 +3,6 @@ from typing import Tuple, TypeAlias
 
 Color: TypeAlias = Tuple[int, int, int]
 
-
-
-
 @dataclasses.dataclass
 class FlappyBirdConfig:
 	Dimensions: tuple[int, int] = (1250, 900)
@@ -20,7 +17,7 @@ class FlappyBirdConfig:
 
 	# pipes attributes
 	pipe_width: int = 30
-	pipe_gap: int = 120
+	pipe_gap: int = 250
 	pipe_color: Color = ground_color
 	pipe_min_size: int = 100
 
@@ -36,7 +33,6 @@ class FlappyBirdConfig:
 	gravity_step: float = speed / 40
 	gravity_max_velocity: float = speed
 	flap_velocity: float = -gravity_max_velocity * 0.8
-
 
 
 config = FlappyBirdConfig()
