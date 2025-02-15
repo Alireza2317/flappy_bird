@@ -291,14 +291,45 @@ class FlappyBirdGameAI(FlappyBirdGame):
 		for bird in self.population.birds:
 			bird.draw(self.screen)
 
+		self.update_visions(draw=True)
+
 		self.update_text()
 
 		self.clock.tick(config.fps)
 		pg.display.flip()
 
 
-	def update_vision(self):
-		""" Updating the vision of each bird in the population. """
+	def _draw_visions(self, bird: Bird, vision: VisionType) -> None:
+		""" Draw the vision lines for the bird based on vision parameters. """
+
+		# from bird to the pipes(horizental distance)
+		pg.draw.line(
+			self.screen, bird.color,
+			(config.bird_x, bird.shape.centery),
+			(config.bird_x + int(vision[2] * config.ground_level), bird.shape.centery),
+			width=1
+		)
+
+		# from bird to the top pipe and bottom pipe (vertical distance)
+		pg.draw.line(
+			self.screen, bird.color,
+			(bird.shape.centerx, self.next_pipe.top_y),
+			(bird.shape.centerx, self.next_pipe.bottom_y),
+			width=1
+		)
+
+
+	def update_visions(self, draw: bool = True) -> None:
+		"""
+		Updating the vision of each bird in the population.
+		Args:
+			draw: wether to draw the vision lines or not.
+
+		Each vision contains 3 elements:
+			- vertical distance to the top pipe
+			- vertical distance to the bottom pipe
+			- horizental distance to the pipe
+		"""
 
 		# if there are still no pipes
 		if not self.pipes:
@@ -306,20 +337,24 @@ class FlappyBirdGameAI(FlappyBirdGame):
 
 		self.visions: list[VisionType] = []
 
-		for bird in self.population.birds:
+		for i, bird in enumerate(self.population.birds):
 			# elements in vision(normalized):
 
 			# first element is vertical distance to top pipe
-			v1: float = (bird.y - self.next_pipe.top_y) / config.ground_level
+			v1: float = max(0, bird.shape.centery - self.next_pipe.top_y) / config.ground_level
 
 			# second element is vertical distance to bottom pipe
-			v2: float = (bird.y - self.next_pipe.bottom_y) / config.ground_level
+			v2: float = max(0, self.next_pipe.bottom_y - bird.shape.centery) / config.ground_level
 
 			# third element is horizental distance to pipes
-			v3: float = (config.bird_x - self.next_pipe.x) / config.ground_level
+			v3: float = max(0, self.next_pipe.x - config.bird_x) / config.ground_level
 
+			# update visions list
 			vision: VisionType = (v1, v2, v3)
 			self.visions.append(vision)
+
+			if draw:
+				self._draw_visions(bird, vision)
 
 
 	def step(self):
