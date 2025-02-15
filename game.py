@@ -337,17 +337,21 @@ class FlappyBirdGameAI(FlappyBirdGame):
 
 		self.visions: list[VisionType] = []
 
-		for i, bird in enumerate(self.population.birds):
-			# elements in vision(normalized):
-
+		for bird in self.population.birds:
+			# elements in vision
 			# first element is vertical distance to top pipe
-			v1: float = max(0, bird.shape.centery - self.next_pipe.top_y) / config.ground_level
+			v1: float = max(0, bird.shape.centery - self.next_pipe.top_y)
 
 			# second element is vertical distance to bottom pipe
-			v2: float = max(0, self.next_pipe.bottom_y - bird.shape.centery) / config.ground_level
+			v2: float = max(0, self.next_pipe.bottom_y - bird.shape.centery)
 
 			# third element is horizental distance to pipes
-			v3: float = max(0, self.next_pipe.x - config.bird_x) / config.ground_level
+			v3: float = max(0, self.next_pipe.x - config.bird_x)
+
+			# normalize all vision elements
+			v1 /= config.ground_level
+			v2 /= config.ground_level
+			v3 /= config.ground_level
 
 			# update visions list
 			vision: VisionType = (v1, v2, v3)
