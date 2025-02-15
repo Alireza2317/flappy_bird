@@ -239,6 +239,11 @@ class FlappyBirdGameAI(FlappyBirdGame):
 				pg.quit()
 				sys.exit()
 
+			if event.type == pg.KEYDOWN:
+				if event.key == pg.K_KP_PLUS:
+					config.speed = min(config.speed+1, config.bird_width-1)
+				if event.key == pg.K_KP_MINUS:
+					config.speed = max(config.speed-1, 1)
 
 	def check_bird_collisions(self) -> None:
 		for bird in self.population.birds:
