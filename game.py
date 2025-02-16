@@ -58,7 +58,7 @@ class FlappyBirdGame:
 		self.score: int = 0
 		self.game_over = False
 
-		self.next_pipe_x: int = config.Dimensions[0] + config.pipes_distance_range[0]
+		self.new_pipe_x: int = config.Dimensions[0] + config.pipes_distance_range[0]
 
 		self.pipes: deque[PipesPair] = deque([PipesPair()])
 		self.bird = Bird()
@@ -93,7 +93,7 @@ class FlappyBirdGame:
 		random_distance: int  = random.randint(*config.pipes_distance_range)
 
 		# since the last pipe is at the end of the screen, the next pipe will be farther outside
-		self.next_pipe_x = config.Dimensions[0] + random_distance
+		self.new_pipe_x = config.Dimensions[0] + random_distance
 
 
 	def update_pipes(self):
@@ -102,11 +102,11 @@ class FlappyBirdGame:
 		"""
 
 		# move the next pipe x coordinate to the left
-		self.next_pipe_x -= config.speed
+		self.new_pipe_x -= config.speed
 
 		# generate new pipes if the next pipe x coordinate is at the end of the screen
 		# which means it should be drawn now
-		if self.next_pipe_x <= config.Dimensions[0]:
+		if self.new_pipe_x <= config.Dimensions[0]:
 			self._generate_pipes()
 
 		# skip the update if there are no pipes yet
@@ -171,7 +171,7 @@ class FlappyBirdGame:
 		self.update_pipes()
 
 
-	def check_bird_collisions(self) -> None:
+	def check_collisions(self) -> None:
 		""" Checks wether the bird collided with the pipes or the ground. """
 
 		colide_ground = self.bird.collided(self.ground.rect)
@@ -211,7 +211,7 @@ class FlappyBirdGame:
 		self.check_events()
 
 		# check if the bird hit any of the pipes or the ground:
-		self.check_bird_collisions()
+		self.check_collisions()
 
 		# update the current score based on the bird passing the pipe
 		self.update_score()
@@ -225,6 +225,7 @@ class FlappyBirdGame:
 
 
 class FlappyBirdGameAI(FlappyBirdGame):
+
 	def reset(self):
 		super().reset()
 
@@ -245,7 +246,8 @@ class FlappyBirdGameAI(FlappyBirdGame):
 				if event.key == pg.K_KP_MINUS:
 					config.speed = max(config.speed-1, 1)
 
-	def check_bird_collisions(self) -> None:
+
+	def check_collisions(self) -> None:
 		for bird in self.population.birds:
 			colide_ground = bird.collided(self.ground.rect)
 
@@ -369,7 +371,7 @@ class FlappyBirdGameAI(FlappyBirdGame):
 	def step(self):
 		self.check_events()
 
-		self.check_bird_collisions()
+		self.check_collisions()
 
 		self.update_score()
 
