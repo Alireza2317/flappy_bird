@@ -1,8 +1,8 @@
 import sys
 import random
 import pygame as pg
-from config import config, Color
-
+from config import config, Color, VisionType
+from neural_net import Network
 
 
 class Bird:
@@ -18,6 +18,8 @@ class Bird:
 		)
 
 		self.color = color
+
+		self.brain: Network = Network()
 
 		self.reset()
 
@@ -86,8 +88,12 @@ class Bird:
 			self._flap = True
 
 
-	def decide(self):
-		if random.uniform(0, 1) > 0.972:
+	def decide(self, vision: VisionType = None):
+		""" Decide flap or idle, based on the vision. """
+
+		decision = random.uniform(0, 1)
+
+		if decision > 0.972:
 			self.flap()
 
 

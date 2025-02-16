@@ -2,6 +2,8 @@ import dataclasses
 from typing import Tuple, TypeAlias
 
 Color: TypeAlias = Tuple[int, int, int]
+VisionType: TypeAlias = tuple[float, float, float]
+
 
 @dataclasses.dataclass
 class FlappyBirdConfig:

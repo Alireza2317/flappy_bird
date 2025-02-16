@@ -3,14 +3,11 @@ import random
 import pygame as pg
 from collections import deque
 from typing import TypeAlias
-from config import config
+from config import config, VisionType
 from components import Ground, PipesPair
 from bird import Bird, BirdPopulation
 
-
 random.seed(23)
-
-VisionType: TypeAlias = tuple[float, float, float]
 
 
 class FlappyBirdGame:
