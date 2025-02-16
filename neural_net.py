@@ -23,18 +23,25 @@ class Network:
 	def __init__(self):
 		self.input: np.ndarray = np.zeros((4,))
 		self.weights: np.ndarray = np.random.random((4,))
-		self.activation: Callable = self.sigmoid
+		self.activation: Callable[[float], float] = self.sigmoid
 
 		self.forward()
 
 
-	def forward(self, in_vector: np.ndarray | None = None) -> None:
+	def forward(self, in_vector: np.ndarray | None = None) -> float:
+		"""
+		Performs a feed forward with the given input vector or self.input
+		Returns the output value as a float.
+		"""
+
 		if in_vector is None:
 			in_vector = self.input
 
 		self.output_neuron: float = self.activation(
 			self.weights.T @ in_vector
 		)
+
+		return self.output_neuron
 
 
 	@staticmethod
