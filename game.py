@@ -222,6 +222,11 @@ class FlappyBirdGame:
 
 
 class FlappyBirdGameAI(FlappyBirdGame):
+	def __init__(self):
+		super().__init__()
+
+		self.update_visions()
+
 
 	def reset(self):
 		super().reset()
@@ -280,7 +285,7 @@ class FlappyBirdGameAI(FlappyBirdGame):
 
 
 	def update(self):
-		self.population.update(self.screen)
+		self.population.update(self.screen, visions=self.visions)
 		self.update_pipes()
 
 

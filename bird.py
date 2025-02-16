@@ -1,6 +1,7 @@
 import sys
 import random
 import pygame as pg
+import numpy as np
 from config import config, Color, VisionType
 from neural_net import Network
 
@@ -91,7 +92,12 @@ class Bird:
 	def decide(self, vision: VisionType = None):
 		""" Decide flap or idle, based on the vision. """
 
-		decision = random.uniform(0, 1)
+		if vision:
+			# add in the bias neuron with value 1
+			in_vector = np.append(vision, values=[1])
+			decision = self.brain.forward(in_vector)
+		else:
+			decision = random.uniform(0, 1)
 
 		if decision > 0.972:
 			self.flap()
@@ -118,16 +124,16 @@ class BirdPopulation:
 			self.birds.append(Bird(random_color))
 
 
-	def update(self, screen: pg.Surface) -> None:
+	def update(self, screen: pg.Surface, visions: list[VisionType]) -> None:
 		""" Makes a move for all birds and updates and draws them."""
 
 		dead_birds: list[int] = []
 
-		for bird in self.birds:
+		for i, bird in enumerate(self.birds):
 			if bird.dead:
 				dead_birds.append(bird)
 			else:
-				bird.decide()
+				bird.decide(vision=visions[i])
 				bird.update()
 				bird.draw(screen)
 
