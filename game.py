@@ -380,13 +380,3 @@ class FlappyBirdGameAI(FlappyBirdGame):
 		self.update()
 		self.update_screen()
 
-
-
-if __name__ == '__main__':
-	game = FlappyBirdGame()
-
-	while True:
-		game.step()
-
-		if game.game_over:
-			game.reset()

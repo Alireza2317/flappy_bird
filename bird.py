@@ -153,33 +153,3 @@ class BirdPopulation:
 
 	def __len__(self) -> int:
 		return len(self.birds)
-
-
-def main():
-	from components import Ground
-	#random.seed()
-
-	pg.init()
-	s = pg.display.set_mode(config.Dimensions)
-
-	g = Ground()
-	g.draw(s)
-
-	p = BirdPopulation(5)
-
-	while True:
-		for event in pg.event.get():
-			if event.type == pg.QUIT:
-				pg.quit()
-				sys.exit()
-
-
-		s.fill(config.BG_COLOR)
-		g.draw(s)
-
-		p.update(s)
-
-		pg.display.flip()
-
-if __name__ == '__main__':
-	main()
